@@ -4,26 +4,43 @@ Removes the 10-second limit on **Takeover** in Tekken 8's *My Replay & Tips*.
 A takeover now runs until the round clock would have expired (or until someone
 gets knocked out, same as before).
 
-Single-file plugin, no dependencies, no UI, no configuration.
+No dependencies, no UI, no configuration, nothing to run each launch.
 
 ## Install
 
-1. Install the [Ultimate ASI Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader)
-   into `TEKKEN 8/Polaris/Binaries/Win64/` (it is the `dinput8.dll` proxy — the
-   `winmm.dll` slot does not work, Tekken 8 rejects a foreign `winmm` and
-   relaunch-loops).
-2. Drop `T8ReplayUnlimitedTakeoverTimer.asi` into
-   `TEKKEN 8/Polaris/Binaries/Win64/plugins/`.
-3. Start the game. `t8_replay_unlimited_takeover_timer.log` appears next to the
-   `.asi` and should read:
+Two builds of the same patch. Pick **one** — they are mutually exclusive.
 
-   ```
-   build: TimeDateStamp=0x........ SizeOfImage=0x.......
-   takeover start : RVA 0x........  600 -> 16777215
-   takeover helper: RVA 0x........  600 -> 16777215
-   ```
+### A. You already run the Ultimate ASI Loader
 
-The log is rewritten on every launch. Uninstall = delete the `.asi`.
+Drop `T8ReplayUnlimitedTakeoverTimer.asi` into
+`TEKKEN 8/Polaris/Binaries/Win64/plugins/`. Done.
+
+### B. You do not
+
+Drop `dinput8.dll` into `TEKKEN 8/Polaris/Binaries/Win64/` (next to
+`Polaris-Win64-Shipping.exe`). Tekken 8 imports DirectInput, so a `dinput8.dll`
+sitting beside the exe is loaded ahead of the system one; this build forwards
+all six real exports on to `System32\dinput8.dll`, so DirectInput keeps working.
+
+**Only one thing can own the name `dinput8.dll`.** The Ultimate ASI Loader
+itself installs under it, and so do opendojo and Enable Debug — if you have any
+of them, use build A or you will break them.
+
+(`winmm.dll` is not an option: Tekken 8 rejects a foreign `winmm` in the game
+folder and the launcher relaunch-loops.)
+
+### Then
+
+Start the game. `t8_replay_unlimited_takeover_timer.log` appears next to
+whichever file you installed, and should read:
+
+```
+build: TimeDateStamp=0x........ SizeOfImage=0x.......
+takeover start : RVA 0x........  600 -> 16777215
+takeover helper: RVA 0x........  600 -> 16777215
+```
+
+The log is rewritten on every launch. Uninstall = delete the file you added.
 
 ## How it works
 
@@ -62,12 +79,23 @@ build (`TimeDateStamp`) it failed on. Re-derive that signature and update
 ./build.sh
 ```
 
-Requires CMake and MSVC (x64). **Every build overwrites the installed `.asi`** —
-configure with `-DT8T_DEPLOY_DIR=""` for a compile check that does not deploy.
+Requires CMake and MSVC (x64). Produces both files in `build/Release/`.
+
+**Every build overwrites the installed `.asi`** — configure with
+`-DT8T_DEPLOY_DIR=""` for a compile check that does not deploy. The build never
+copies `dinput8.dll` anywhere; install that one by hand, or it would clobber
+whatever owns the slot. A deploy that fails with *Permission denied* just means
+the game is running with the plugin loaded — close it and rebuild.
+
+Run the self-check after any change to the patterns:
+
+```sh
+cmake --build build --config Release --target selftest && ./build/Release/selftest.exe
+```
 
 ## Credits
 
-Found by reverse-engineering Tekken 8 v3.02.02 on 2026-09-12. Originally a Cheat
-Engine script (`research/ce_replay_takeover_timer.lua` in
-[tekken-fashion-hub](https://github.com/)) that had to be re-run after every
-game start.
+Found by reverse-engineering Tekken 8 v3.02.02 on 2026-09-12, and verified in
+game the same day. Started life as a Cheat Engine script that had to be re-run
+after every game start; the `dinput8.dll` proxy is lifted from the same
+author's Tekken Outfits mod.

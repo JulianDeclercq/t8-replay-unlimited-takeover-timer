@@ -250,12 +250,24 @@ DWORD WINAPI worker(LPVOID)
 
 } // namespace
 
+#ifdef T8T_DINPUT8_PROXY
+// dinput8_proxy.cpp — only in the dinput8.dll build, which has to forward the
+// real DirectInput exports. The .asi build is loaded by the ASI loader and
+// exports nothing.
+void dinput8_proxy_load();
+#endif
+
 BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, LPVOID)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
         g_self = inst;
         DisableThreadLibraryCalls(inst);
+
+#ifdef T8T_DINPUT8_PROXY
+        // Before anything can call an export, and before the scan thread runs.
+        dinput8_proxy_load();
+#endif
 
         // The scan runs off the loader lock: a ~100 MB .text sweep would stall
         // startup, and the takeover code is minutes of menu navigation away.

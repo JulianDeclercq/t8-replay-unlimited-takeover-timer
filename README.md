@@ -14,7 +14,10 @@ No dependencies, no UI, no configuration, nothing to run each launch.
 Drop `dinput8.dll` into `TEKKEN 8/Polaris/Binaries/Win64/` (next to
 `Polaris-Win64-Shipping.exe`). Done!
 
-[!warning] If you already use another `dinput8.dll` mod, download `T8ReplayUnlimitedTakeoverTimer.asi` instead and follow the step from [this guide](https://tekken.fit/guides/other-dinput8-mods)
+> [!WARNING]
+> If you already use another `dinput8.dll` mod, download
+> `T8ReplayUnlimitedTakeoverTimer.asi` instead and follow the steps from
+> [this guide](https://tekken.fit/guides/other-dinput8-mods).
 
 ### Then
 

@@ -4,43 +4,21 @@ Removes the 10-second limit on **Takeover** in Tekken 8's *My Replay & Tips*.
 A takeover now runs until the round clock would have expired (or until someone
 gets knocked out, same as before).
 
+<img width="886" height="815" alt="image" src="https://github.com/user-attachments/assets/74893e60-a7fa-4c38-bdb7-8c6e49ee15ce" />
+
+
 No dependencies, no UI, no configuration, nothing to run each launch.
 
 ## Install
 
-Two builds of the same patch. Pick **one** — they are mutually exclusive.
-
-### A. You already run the Ultimate ASI Loader
-
-Drop `T8ReplayUnlimitedTakeoverTimer.asi` into
-`TEKKEN 8/Polaris/Binaries/Win64/plugins/`. Done.
-
-### B. You do not
-
 Drop `dinput8.dll` into `TEKKEN 8/Polaris/Binaries/Win64/` (next to
-`Polaris-Win64-Shipping.exe`). Tekken 8 imports DirectInput, so a `dinput8.dll`
-sitting beside the exe is loaded ahead of the system one; this build forwards
-all six real exports on to `System32\dinput8.dll`, so DirectInput keeps working.
+`Polaris-Win64-Shipping.exe`). Done!
 
-**Only one thing can own the name `dinput8.dll`.** The Ultimate ASI Loader
-itself installs under it, and so do opendojo and Enable Debug — if you have any
-of them, use build A or you will break them.
-
-(`winmm.dll` is not an option: Tekken 8 rejects a foreign `winmm` in the game
-folder and the launcher relaunch-loops.)
+[!warning] If you already use another `dinput8.dll` mod, download `T8ReplayUnlimitedTakeoverTimer.asi` instead and follow the step from [this guide](https://tekken.fit/guides/other-dinput8-mods)
 
 ### Then
 
-Start the game. `t8_replay_unlimited_takeover_timer.log` appears next to
-whichever file you installed, and should read:
-
-```
-build: TimeDateStamp=0x........ SizeOfImage=0x.......
-takeover start : RVA 0x........  600 -> 16777215
-takeover helper: RVA 0x........  600 -> 16777215
-```
-
-The log is rewritten on every launch. Uninstall = delete the file you added.
+Start the game.
 
 ## How it works
 

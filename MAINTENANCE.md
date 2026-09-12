@@ -30,7 +30,16 @@ logged and skipped. A failed scan logs `NOT FOUND` and the game loads normally.
 
 ## Patch day
 
-If a game update breaks it, the log says which site stopped matching and which
+`t8_replay_unlimited_takeover_timer.log` sits next to whichever file is
+installed and is rewritten on every launch. A healthy one reads:
+
+```
+build: TimeDateStamp=0x........ SizeOfImage=0x.......
+takeover start : RVA 0x........  600 -> 16777215
+takeover helper: RVA 0x........  600 -> 16777215
+```
+
+If a game update breaks it, that log says which site stopped matching and which
 build (`TimeDateStamp`) it failed on. Re-derive that signature and update
 `kSites` in `takeover.cpp` — nothing else in the plugin knows about addresses.
 

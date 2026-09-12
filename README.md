@@ -1,6 +1,6 @@
 # T8 Replay Unlimited Takeover Timer
 
-Removes the 10-second limit on **Takeover** in Tekken 8's *My Replay & Tips*.
+Removes the 10-second limit on **takeover** in Tekken 8's replays.
 A takeover now runs until the round clock would have expired (or until someone
 gets knocked out, same as before).
 
@@ -22,7 +22,3 @@ Drop `dinput8.dll` into `TEKKEN 8/Polaris/Binaries/Win64/` (next to
 ### Then
 
 Start the game.
-
----
-
-Internals, the patch-day recipe and build instructions: [MAINTENANCE.md](MAINTENANCE.md)
